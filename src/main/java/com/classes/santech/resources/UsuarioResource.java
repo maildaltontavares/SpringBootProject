@@ -11,7 +11,7 @@ import com.classes.santech.entities.usuario;
 
 @RestController
 @RequestMapping(value = "/usuario")
-public class UsuarioResource {
+public class UsuarioResource { 
 
 	@GetMapping
 	public ResponseEntity<usuario> findAll() {
