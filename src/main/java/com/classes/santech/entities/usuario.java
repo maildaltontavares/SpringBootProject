@@ -1,23 +1,33 @@
 package com.classes.santech.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table; 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "S0001_user")
-public class usuario implements Serializable {
-
+//@Table(name = "S0001_user")
+@Table(name ="\"S0001_usuario\"")
+public class Usuario implements Serializable {
+  
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "d0001_id", nullable = false)
 	private Long id;
 	
@@ -31,10 +41,31 @@ public class usuario implements Serializable {
 	private String senha;
 
 	@Column(name = "d0001_tel", nullable = false)
-	private String tel;	
+	private String tel;	 
 	
-	public usuario(Long id, String nome, String email, String senha, String tel) {
-		super();
+	
+	//@ManyToMany                                                      /* Chave estrangeira */                                  /* chave da tabela relacionada */
+	//@JoinTable(name = "s0003_usuario_grupo", joinColumns = @JoinColumn(name = "d0001_usuario"), inverseJoinColumns = @JoinColumn(name = "d0002_grupo_usuario"))
+	//private Set<GrupoUsuario> gruposUsuario = new HashSet<>();
+	
+	@ManyToMany                                                      /* Chave estrangeira */                                  /* chave da tabela relacionada */
+	@JoinTable(name = "\"S0011_USUARIO_GRUPO\"", joinColumns = @JoinColumn(name = "d0001_id"), inverseJoinColumns = @JoinColumn(name = "d0006_id_grupo"))
+	private Set<Grupo> gruposUsuario = new HashSet<>();	
+	
+	
+	@ManyToOne
+	@JoinColumn(name ="d0001_filial_default")
+	private  Filial  filialPadraoUsuario; 	
+	  
+	public Filial getFilialPadraoUsuario() {
+		return filialPadraoUsuario;
+	}
+
+	public Usuario() {
+	}
+	
+	public Usuario(Long id, String nome, String email, String senha, String tel) {
+	 
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
@@ -42,6 +73,11 @@ public class usuario implements Serializable {
 		this.tel = tel;
 	}
 
+	 
+	public Set<Grupo> getGrupoUsuario() {
+		return gruposUsuario;
+	}	
+	
 	
 	public Long getId() {
 		return id;
@@ -96,7 +132,7 @@ public class usuario implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		usuario other = (usuario) obj;
+		Usuario other = (Usuario) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

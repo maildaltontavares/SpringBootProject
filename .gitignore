@@ -1,6 +1,8 @@
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+
 
 !**/src/test/**/target/
 
@@ -28,6 +30,7 @@ target/
 build/
 
 !**/src/test/**/build/
+!**/src/main/**/build/
 
 ### VS Code ###
 .vscode/
